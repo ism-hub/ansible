@@ -1,0 +1,46 @@
+- name: add nextcloud-client repo
+  apt_repository:
+    repo: ppa:nextcloud-devs/client
+    update-cache: true
+
+- name: install nextcloud cli client
+  apt:
+    update-cache: true
+    pkg:
+      - nextcloud-client
+    state: latest
+
+- name: debug stuff
+  debug:
+    msg: 'using playbook_dir to get files dir {{playbook_dir}}/roles/nextcloud_client/files/'
+
+# including  file which containes 2 vars
+# nextcloud_user - the username
+# nextcloud_pass - the pass
+- name: include nextcloud info
+  ansible.builtin.include_vars:
+    file: ../../../../nextcloud_uer_info.yaml
+
+- name: 'Creating cronjob script directory'
+  become: false
+  file:
+    path: '~/.local/bin/cron/'
+    state: directory
+
+- name: Generating nextcloudcmd sync script (for the cron-job)
+  become: false
+  template:
+    mode: 0700 #  only user can read/write/exec
+    src: nextcloudcmd_cronjob.j2
+    dest: '~/.local/bin/cron/nextcloudcmd_cronjob.sh'
+  vars:
+    nxtcld_server: http://192.168.1.88
+    map_server_dir_to_local_dir:
+      '/Documents/org': '~/nextcloud/Documents/org' # org files
+
+- name: Add cronjob which sync the folders (specified in vars) every min
+  become: false
+  ansible.builtin.cron:
+    name: 'Sync nextcloudcmd'
+    minute: '*'
+    job: '~/.local/bin/cron/nextcloudcmd_cronjob.sh'

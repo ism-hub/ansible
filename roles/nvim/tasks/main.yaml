@@ -1,0 +1,22 @@
+- name: add nvim repository 
+  apt_repository:
+    repo: ppa:neovim-ppa/stable
+    update-cache: true
+
+- name: install nvim + dependencies
+  package:
+    name:
+      - neovim
+      - ripgrep
+    state: latest
+    update-cache: yes
+
+- name: download nvim configuration from github
+  become: false
+  tags: nvim, shell
+  git:
+    repo: https://github.com/ism-hub/nvim.git
+    dest: ~/.config/nvim
+    clone: yes
+    update: yes
+    depth: 1
