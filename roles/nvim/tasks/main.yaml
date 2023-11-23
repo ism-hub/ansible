@@ -1,21 +1,27 @@
-- name: add nvim repository 
-  apt_repository:
-    repo: ppa:neovim-ppa/stable
-    update-cache: true
+- name: Download nvim
+  tags: nvim
+  ansible.builtin.get_url:
+    url: "{{appimage}}"
+    dest: /usr/bin/nvim
+    mode: 'a+x'
+    checksum: "{{appimage_sha}}"
 
-- name: install nvim + dependencies
+- name: Install nvim dependencies
+  tags: nvim
   package:
     name:
-      - neovim
       - ripgrep
+      - gcc
+      - libfuse2
     state: latest
     update-cache: yes
 
-- name: download nvim configuration from github
+- name: Download nvim configuration from github
   become: false
-  tags: nvim, shell
+  tags: nvim
   git:
     repo: https://github.com/ism-hub/nvim.git
+    version: "{{config_branch}}"
     dest: ~/.config/nvim
     clone: yes
     update: yes

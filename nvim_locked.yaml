@@ -5,5 +5,4 @@
     - role: nvim
       appimage: https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
       appimage_sha: sha256:https://github.com/neovim/neovim/releases/download/stable/nvim.appimage.sha256sum
-      config_branch: main
-
+      config_branch: locked/9.4

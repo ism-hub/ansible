@@ -2,4 +2,7 @@
 - hosts: localhost
   become: true
   roles:
-    - nvim_unstable
+    - role: nvim
+      appimage: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+      appimage_sha: sha256:https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage.sha256sum
+      config_branch: main
