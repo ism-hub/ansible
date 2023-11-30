@@ -119,3 +119,13 @@ Sonnar/Radarr configuration -
 4. Add Indexers (using Jacket) - basically enter Jackett `http://<server-ip>:9117/` and follow the instructions there (press `Add indexer` choose some (like 1337x, ThePirateBay, Torrentz, etc.) and follow `Adding a Jackett indexer in Sonarr or Radarr`)
 5. Rename episodes/Movies (Settings -> Media Management -> Rename Episodes/Movies <click the choice-box>)
 6. When downloading something choose the `Root Folder` to be `/data` (need to do once and it remembers for the next time) (without this the hard-link wont work and it will copy and use up more space)
+
+## Nextcloud-Server
+
+TODO: this also need the docker installation and adding the user to the current group (should seperate that script to avoid duplication)
+
+Creates docker-compose of nextcloud-server behind nginx-reverse-proxy with certificate to support https
+(also installs docker like in the Media-Server)
+The script asks for `url` this should be the url of the nextcloud-server 
+The script asks for `mail` this is optional and for the certificate-container to notify on stuff
+

@@ -1,0 +1,68 @@
+# - name: get the username running the deploy
+#   become: false
+#   local_action: command whoami
+#   register: username
+
+- name: get the user id running the deploy
+  become: false
+  local_action: command id -u
+  register: user_id
+
+- name: get the group id running the deploy
+  become: false
+  local_action: command id -g
+  register: group_id
+
+- name: Add https-stufff dependent folders with the correct user (if not exists) - cert
+  become: false
+  ansible.builtin.file:
+    path: ~/synced/nextcloud/for_https/certs
+    state: directory
+
+- name: Add https-stufff dependent folders with the correct user (if not exists) - vhost.d
+  become: false
+  ansible.builtin.file:
+    path: ~/synced/nextcloud/for_https/vhost.d
+    state: directory
+
+- name: Add https-stufff dependent folders with the correct user (if not exists) - html
+  become: false
+  ansible.builtin.file:
+    path: ~/synced/nextcloud/for_https/html
+    state: directory
+
+- name: Add https-stufff dependent folders with the correct user (if not exists) - acme
+  become: false
+  ansible.builtin.file:
+    path: ~/synced/nextcloud/for_https/acme
+    state: directory
+
+- name: Add nextcloud dependent folders with the correct user (if not exists) - www
+  become: false
+  ansible.builtin.file:
+    path: ~/synced/nextcloud/var/www/html
+    state: directory
+
+- name: Creating ~/nextcloud directory for the docker-compose file
+  become: false
+  file:
+    path: '~/nextcloud'
+    state: directory
+
+- name: Generate docker-compose file
+  become: false
+  template:
+    mode: 0700 #  only user can read/write/exec
+    src: nextcloud_server_docker_compose.j2
+    dest: '~/nextcloud/docker-compose.yml'
+  vars:
+    uid: "{{ user_id.stdout }}"
+    gid: "{{ group_id.stdout }}"
+    nextcloud_url: "{{ url }}"
+    lets_encrypt_mail: "{{ mail }}" # optional
+
+- name: Copy the proxy folder
+  become: false
+  copy:
+    src: files/proxy/    # note the '/' <-- !!!
+    dest: ~/nextcloud/proxy/
