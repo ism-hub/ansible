@@ -11,43 +11,43 @@
 - name: Add dependent folders with the correct user (if not exists) - deluge/config
   become: false
   ansible.builtin.file:
-    path: ~/media_server/synced/deluge/config
+    path: ~/servers/media_server/synced/deluge/config
     state: directory
 
 - name: Add dependent folders with the correct user (if not exists) - deluge/data
   become: false
   ansible.builtin.file:
-    path: ~/media_server/notsynced/deluge/data
+    path: ~/servers/media_server/notsynced/deluge/data
     state: directory
 
 - name: Add dependent folders with the correct user (if not exists) - plex/config
   become: false
   ansible.builtin.file:
-    path: ~/media_server/synced/plex/config
+    path: ~/servers/media_server/synced/plex/config
     state: directory
 
 - name: Add dependent folders with the correct user (if not exists) - sonar/config
   become: false
   ansible.builtin.file:
-    path: ~/media_server/synced/sonarr/config 
+    path: ~/servers/media_server/synced/sonarr/config 
     state: directory
 
 - name: Add dependent folders with the correct user (if not exists) - radarr/config
   become: false
   ansible.builtin.file:
-    path: ~/media_server/synced/radarr/config 
+    path: ~/servers/media_server/synced/radarr/config 
     state: directory
       
 - name: Add dependent folders with the correct user (if not exists) - jackett/config
   become: false
   ansible.builtin.file:
-    path: ~/media_server/synced/jackett/config 
+    path: ~/servers/media_server/synced/jackett/config 
     state: directory
     
-- name: Creating ~/media_server directory for the docker-compose file
+- name: Creating ~/servers/media_server directory for the docker-compose file
   become: false
   file:
-    path: '~/media_server'
+    path: '~/servers/media_server'
     state: directory
 
 - name: Generate docker-compose file
@@ -55,7 +55,7 @@
   template:
     mode: 0700 #  only user can read/write/exec
     src: media_server_docker_compose.j2
-    dest: '~/media_server/docker-compose.yml'
+    dest: '~/servers/media_server/docker-compose.yml'
   vars:
     uid: "{{ user_id.stdout }}"
     gid: "{{ group_id.stdout }}"

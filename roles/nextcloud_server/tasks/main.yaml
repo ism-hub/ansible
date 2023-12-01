@@ -16,37 +16,37 @@
 - name: Add https-stufff dependent folders with the correct user (if not exists) - cert
   become: false
   ansible.builtin.file:
-    path: ~/synced/nextcloud/for_https/certs
+    path: ~/servers/nextcloud/synced/for_https/certs
     state: directory
 
 - name: Add https-stufff dependent folders with the correct user (if not exists) - vhost.d
   become: false
   ansible.builtin.file:
-    path: ~/synced/nextcloud/for_https/vhost.d
+    path: ~/servers/nextcloud/synced/for_https/vhost.d
     state: directory
 
 - name: Add https-stufff dependent folders with the correct user (if not exists) - html
   become: false
   ansible.builtin.file:
-    path: ~/synced/nextcloud/for_https/html
+    path: ~/servers/nextcloud/synced/for_https/html
     state: directory
 
 - name: Add https-stufff dependent folders with the correct user (if not exists) - acme
   become: false
   ansible.builtin.file:
-    path: ~/synced/nextcloud/for_https/acme
+    path: ~/servers/nextcloud/synced/for_https/acme
     state: directory
 
 - name: Add nextcloud dependent folders with the correct user (if not exists) - www
   become: false
   ansible.builtin.file:
-    path: ~/synced/nextcloud/var/www/html
+    path: ~/servers/nextcloud/synced/var/www/html
     state: directory
 
-- name: Creating ~/nextcloud directory for the docker-compose file
+- name: Creating ~/servers/nextcloud directory for the docker-compose file
   become: false
   file:
-    path: '~/nextcloud'
+    path: '~/servers/nextcloud'
     state: directory
 
 - name: Generate docker-compose file
@@ -54,7 +54,7 @@
   template:
     mode: 0700 #  only user can read/write/exec
     src: nextcloud_server_docker_compose.j2
-    dest: '~/nextcloud/docker-compose.yml'
+    dest: '~/servers/nextcloud/docker-compose.yml'
   vars:
     uid: "{{ user_id.stdout }}"
     gid: "{{ group_id.stdout }}"
@@ -65,4 +65,4 @@
   become: false
   copy:
     src: files/proxy/    # note the '/' <-- !!!
-    dest: ~/nextcloud/proxy/
+    dest: ~/servers/nextcloud/proxy/

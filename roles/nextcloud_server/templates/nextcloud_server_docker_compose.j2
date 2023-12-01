@@ -9,9 +9,9 @@ services:
     labels:
       com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     volumes:
-      - ~/synced/nextcloud/for_https/certs:/etc/nginx/certs:ro
-      - ~/synced/nextcloud/for_https/vhost.d:/etc/nginx/vhost.d
-      - ~/synced/nextcloud/for_https/html:/usr/share/nginx/html
+      - ~/servers/nextcloud/synced/for_https/certs:/etc/nginx/certs:ro
+      - ~/servers/nextcloud/synced/for_https/vhost.d:/etc/nginx/vhost.d
+      - ~/servers/nextcloud/synced/for_https/html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
     restart: unless-stopped
 
@@ -19,10 +19,10 @@ services:
     image: nginxproxy/acme-companion
     restart: always
     volumes:
-      - ~/synced/nextcloud/for_https/certs:/etc/nginx/certs
-      - ~/synced/nextcloud/for_https/vhost.d:/etc/nginx/vhost.d
-      - ~/synced/nextcloud/for_https/html:/usr/share/nginx/html
-      - ~/synced/nextcloud/for_https/acme:/etc/acme.sh
+      - ~/servers/nextcloud/synced/for_https/certs:/etc/nginx/certs
+      - ~/servers/nextcloud/synced/for_https/vhost.d:/etc/nginx/vhost.d
+      - ~/servers/nextcloud/synced/for_https/html:/usr/share/nginx/html
+      - ~/servers/nextcloud/synced/for_https/acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - DEFAULT_EMAIL={{lets_encrypt_mail}}
@@ -36,7 +36,7 @@ services:
     # ports:
     #   - 80:80
     volumes:
-      - ~/synced/nextcloud/var/www/html:/var/www/html
+      - ~/servers/nextcloud/synced/var/www/html:/var/www/html
     depends_on:
       - db
     environment:
@@ -58,7 +58,7 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
     volumes:
-      - ~/synced/mariadb/var/lib/mysql:/var/lib/mysql
+      - ~/servers/nextcloud/synced/mariadb/var/lib/mysql:/var/lib/mysql
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
     #user: 113:118

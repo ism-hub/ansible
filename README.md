@@ -70,17 +70,17 @@ Installs docker and creates docker-compose for Plex, Sonarr, Radarr, Jackett, De
 
 Creates the following folders -
 
-    ~/media_server/notsynced/deluge/data    # mount for the deluge container - deluge downloads everything to here
-    ~/media_server/synced/deluge/config     # mount for the deluge container - deluge's config
-    ~/media_server/synced/plex/config       # mount for the config of the plex container
-    ~/media_server/synced/sonarr/config     # mount for the config of the sonarr container
-    ~/media_server/synced/radarr/config     # mount for the config of the radarr container
-    ~/media_server/synced/jackett/config    # mount for the config of the jackett container
+    ~/servers/media_server/notsynced/deluge/data    # mount for the deluge container - deluge downloads everything to here
+    ~/servers/media_server/synced/deluge/config     # mount for the deluge container - deluge's config
+    ~/servers/media_server/synced/plex/config       # mount for the config of the plex container
+    ~/servers/media_server/synced/sonarr/config     # mount for the config of the sonarr container
+    ~/servers/media_server/synced/radarr/config     # mount for the config of the radarr container
+    ~/servers/media_server/synced/jackett/config    # mount for the config of the jackett container
 (notice - config mounts needed when updating to a new container, to not lose all the configuration)
 
 Creates the following file -
 
-        ~/media_server/docker-compose.yml
+        ~/servers/media_server/docker-compose.yml
 
 Specifies the current user's uid and gid as the uid/gid to use inside the container.
 
@@ -92,7 +92,7 @@ Installs docker and add the current user to the 'docker' group
 
 running -
 
-    docker compose -f ~/media_server/docker-compose.yml up
+    docker compose -f ~/servers/media_server/docker-compose.yml up
 will start all the containers, but there is still need for manual configuration using the UI - 
 
 Plex configuration - 
@@ -128,9 +128,10 @@ The script asks for `url` this should be the url of the nextcloud-server
 The script asks for `mail` this is optional and for the certificate-container to notify on stuff
 
 Create the following paths - 
-    ~/synced/nextcloud/for_https    # data needed for the certificate
-    ~/synced/nextcloud/var/www/html # the config and data of nextcloud
-    ~/synced/mariadb/var/lib/mysql  # the db nextcloud uses
+
+    ~/servers/nextcloud/synced/for_https    # data needed for the certificate
+    ~/servers/nextcloud/synced/var/www/html # the config and data of nextcloud
+    ~/servers/nextcloud/synced/mariadb/var/lib/mysql  # the db nextcloud uses
 
 ## DDNS-Namecheap
 

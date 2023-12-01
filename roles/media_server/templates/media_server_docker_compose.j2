@@ -11,8 +11,8 @@ services:
       - PGID={{gid}}
       - TZ=Asia/Jerusalem
     volumes:
-      - ~/media_server/synced/sonarr/config:/config
-      - ~/media_server/notsynced/deluge/data:/data
+      - ~/servers/media_server/synced/sonarr/config:/config
+      - ~/servers/media_server/notsynced/deluge/data:/data
     restart: unless-stopped
 
   radarr:
@@ -23,8 +23,8 @@ services:
       - PGID={{gid}}
       - TZ=Asia/Jerusalem
     volumes:
-      - ~/media_server/synced/radarr/config:/config
-      - ~/media_server/notsynced/deluge/data:/data
+      - ~/servers/media_server/synced/radarr/config:/config
+      - ~/servers/media_server/notsynced/deluge/data:/data
       # - /path/to/movies:/movies #optional
       # - /path/to/downloadclient-downloads:/downloads #optional
     ports:
@@ -41,10 +41,10 @@ services:
       - VERSION=docker
       # - PLEX_CLAIM=
     volumes:
-      - ~/media_server/synced/plex/config:/config
+      - ~/servers/media_server/synced/plex/config:/config
       # - ~/media_server/notsynced/plex/tv:/tv
       # - ~/media_server/notsynced/plex/movies:/movies
-      - ~/media_server/notsynced/deluge/data:/data
+      - ~/servers/media_server/notsynced/deluge/data:/data
     restart: unless-stopped
 
   deluge:
@@ -57,8 +57,8 @@ services:
       - TZ=Asia/Jerusalem
       - DELUGE_LOGLEVEL=error #optional
     volumes:
-      - ~/media_server/synced/deluge/config:/config
-      - ~/media_server/notsynced/deluge/data:/data
+      - ~/servers/media_server/synced/deluge/config:/config
+      - ~/servers/media_server/notsynced/deluge/data:/data
       # - ~/media_server/notsynced/deluge/downloads:/downloads
       # - ~/media_server/notsynced/deluge/torrents:/torrents
     restart: unless-stopped
@@ -73,8 +73,8 @@ services:
       - AUTO_UPDATE=true #optional
       # - RUN_OPTS= #optional
     volumes:
-      - ~/media_server/synced/jackett/config:/config
-      - ~/media_server/notsynced/deluge/data:/data
+      - ~/servers/media_server/synced/jackett/config:/config
+      - ~/servers/media_server/notsynced/deluge/data:/data
     ports:
       - 9117:9117
     restart: unless-stopped

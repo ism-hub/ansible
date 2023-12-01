@@ -1,7 +1,7 @@
 - name: Creating ~/ddns directory for the docker-compose file
   become: false
   file:
-    path: '~/ddns'
+    path: '~/servers/ddns'
     state: directory
 
 - name: Generate ddns docker-compose file
@@ -9,7 +9,7 @@
   template:
     mode: 0700 #  only user can read/write/exec
     src: ddns_namecheap_docker_compose.j2
-    dest: '~/ddns/docker-compose.yml'
+    dest: '~/servers/ddns/docker-compose.yml'
   vars:
     namecheap_pass: "{{ namecheap_pass }}"
     domain: "{{ domain }}"
