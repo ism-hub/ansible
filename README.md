@@ -122,10 +122,23 @@ Sonnar/Radarr configuration -
 
 ## Nextcloud-Server
 
-TODO: this also need the docker installation and adding the user to the current group (should seperate that script to avoid duplication)
-
 Creates docker-compose of nextcloud-server behind nginx-reverse-proxy with certificate to support https
 (also installs docker like in the Media-Server)
 The script asks for `url` this should be the url of the nextcloud-server 
 The script asks for `mail` this is optional and for the certificate-container to notify on stuff
 
+Create the following paths - 
+    ~/synced/nextcloud/for_https    # data needed for the certificate
+    ~/synced/nextcloud/var/www/html # the config and data of nextcloud
+    ~/synced/mariadb/var/lib/mysql  # the db nextcloud uses
+
+## DDNS-Namecheap
+
+Docker-Compose for updating the associated ip address of the domain from namecheap
+
+The script asks for `namecheap_pass` can be obtained from here - 
+The script asks for `domain` e.g. example.com
+The script asks for `subdomain` e.g. www
+The script asks for `interval` (update interval) e.g. 300s
+
+For more info can check - `https://github.com/joshuamorris3/namecheap-ddns-update`

@@ -58,8 +58,8 @@
   vars:
     uid: "{{ user_id.stdout }}"
     gid: "{{ group_id.stdout }}"
-    nextcloud_url: "{{ url }}"
-    lets_encrypt_mail: "{{ mail }}" # optional
+    nextcloud_url: "{{ nextcloud_url }}"
+    lets_encrypt_mail: "{{ lets_encrypt_mail }}" # optional
 
 - name: Copy the proxy folder
   become: false

@@ -6,6 +6,7 @@
 - hosts: localhost
   become: true
   roles:
+    - docker
     - role: nextcloud_server
       # url: cloud.example.com
       # mail: mymail@gmail.com

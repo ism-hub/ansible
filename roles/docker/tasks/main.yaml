@@ -1,0 +1,66 @@
+- name: get the username running the deploy
+  become: false
+  local_action: command whoami
+  register: username
+
+- name: get the user id running the deploy
+  become: false
+  local_action: command id -u
+  register: user_id
+
+- name: get the group id running the deploy
+  become: false
+  local_action: command id -g
+  register: group_id
+
+- name: Install docker dependencies
+  tags: docker
+  package:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+    state: latest
+    update-cache: yes
+
+- name: Add docker repo (with its apt-key) (armored keys should use .asc extension, binary should use .gpg)
+  tags: docker
+  block:
+    - name: docker | no apt key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+
+    - name: docker | apt source
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+
+- name: Install docker and docker-compose-plugin
+  tags: docker
+  package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: latest
+    update-cache: yes
+
+- name: Create group "docker" and add user UID to it (so no need for sudo to use docker, no so safe, the user will be like admin)
+  tags: docker
+  block:
+    - name: Ensure group "docker" exists
+      ansible.builtin.group:
+        name: docker
+        state: present
+        # gid: 1750
+
+    - name: adding uid  to group docker
+      ansible.builtin.user:
+        name: "{{ username.stdout }}"
+        uid: "{{ user_id.stdout }}"
+        groups: docker
+        append: yes
+

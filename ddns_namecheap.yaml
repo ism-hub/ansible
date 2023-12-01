@@ -1,0 +1,14 @@
+---
+# shoudl includ 2 vars,
+# url - the url of the server e.g. cloud.example.com
+# mail - the mail letsencrypt-companion is going to use (optional)
+
+- hosts: localhost
+  become: false
+  roles:
+    - role: ddns_namecheap
+      # namecheap_pass: (The Dynamic DNS Password from namecheap.com's dashboard -> Advanced DNS page for the domain with the A records you want to update.)
+      # domain: example.com
+      # subdomain: www
+      # interval: 300s
+

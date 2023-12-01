@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  ddns:
+    image: joshuamorris3/namecheap-ddns-update
+    environment:
+      - NC_DDNS_PASS={{namecheap_pass}} # (The Dynamic DNS Password from namecheap.com's dashboard -> Advanced DNS page for the domain with the A records you want to update.)
+      - DOMAIN={{domain}}               # example.com
+      - SUBDOMAINS={{subdomain}}        # wwww
+      - INTERVAL={{interval}}           # 300s
+    restart: unless-stopped
+
