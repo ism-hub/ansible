@@ -2,6 +2,7 @@
 - hosts: localhost
   become: true
   roles:
+    - nvim_remove
     - role: nvim
       appimage: https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
       appimage_sha: sha256:https://github.com/neovim/neovim/releases/download/stable/nvim.appimage.sha256sum
