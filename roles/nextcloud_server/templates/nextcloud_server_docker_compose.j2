@@ -13,11 +13,12 @@ services:
       - ~/servers/nextcloud/synced/for_https/vhost.d:/etc/nginx/vhost.d
       - ~/servers/nextcloud/synced/for_https/html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - nginx_network
     restart: unless-stopped
 
   letsencrypt-companion:
     image: nginxproxy/acme-companion
-    restart: always
     volumes:
       - ~/servers/nextcloud/synced/for_https/certs:/etc/nginx/certs
       - ~/servers/nextcloud/synced/for_https/vhost.d:/etc/nginx/vhost.d
@@ -28,6 +29,9 @@ services:
       - DEFAULT_EMAIL={{lets_encrypt_mail}}
     depends_on:
       - proxy
+    networks:
+      - nginx_network
+    restart: unless-stopped
 
   nextcloud:
     image: nextcloud:27
@@ -47,6 +51,8 @@ services:
       - VIRTUAL_HOST={{nextcloud_url}}
       # - VIRTUAL_PORT=80
       - LETSENCRYPT_HOST={{nextcloud_url}}
+    networks:
+      - nginx_network
     restart: unless-stopped
 
   db:
@@ -60,6 +66,10 @@ services:
     volumes:
       - ~/servers/nextcloud/synced/mariadb/var/lib/mysql:/var/lib/mysql
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    networks:
+      - nginx_network
     restart: unless-stopped
     #user: 113:118
 
+networks:
+  nginx_network:

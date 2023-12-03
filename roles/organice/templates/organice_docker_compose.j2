@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  organice:
+    image: 'twohundredok/organice:latest'
+    # ports:
+    #   - 5000:5000
+    logging:
+      driver: json-file
+    environment:
+      - VIRTUAL_HOST={{organice_url}}
+      - VIRTUAL_PORT=5000
+      - LETSENCRYPT_HOST={{organice_url}}
+    networks:
+      - nginx_network
+    restart: unless-stopped
+
+networks:
+  nginx_network:

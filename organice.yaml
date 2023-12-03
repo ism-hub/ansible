@@ -1,0 +1,10 @@
+---
+# shoudl includ 2 vars,
+# url - the url of the server e.g. cloud.example.com
+# mail - the mail letsencrypt-companion is going to use (optional)
+
+- hosts: localhost
+  roles:
+    - role: organice
+      # organice_url: organice.example.com
+

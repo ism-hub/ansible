@@ -143,3 +143,27 @@ The script asks for `subdomain` e.g. www
 The script asks for `interval` (update interval) e.g. 300s
 
 For more info can check - `https://github.com/joshuamorris3/namecheap-ddns-update`
+
+## Organice
+
+Prepares docker-compose for the Organice webapp (hosting the webapp in the server).
+
+Create the following path - 
+
+    ~/server/organice
+
+notice: the network in the docker-compose must be the same as the nginx-proxy one.
+
+notice: inorder to use it with nextcloud's webdav - 
+
+1. CORS - specifically the Cross-Origin - (cloud.example.com vs organice.example.com, `organice` calling `cloud` webdav and they are not considered the same origin)
+Need to download the `WebAppPassword` in nextcloud (the admin can download this app) and set `https://organice.example.com` in the `WebDAV/CalDAV` section.
+
+2. The public-share-WebDAV (also allow anonymous connections) continue to fail with CORS even after the change above, so need to use the remote WebDAV with the username and pass,
+e.g. if you have your orgs fiels inside `Documents/org` this will be the path inside organice -
+
+.
+
+    WebDAV url: https://cloud.example.com/remote.php/dav/files/<user-name>/Documents/org 
+    user: <user-name>
+    pass: <user-pass>

@@ -1,0 +1,14 @@
+- name: Creating ~/servers/organice directory for the docker-compose file
+  become: false
+  file:
+    path: '~/servers/organice'
+    state: directory
+
+- name: Generate docker-compose file
+  become: false
+  template:
+    mode: 0700 #  only user can read/write/exec
+    src: organice_docker_compose.j2
+    dest: '~/servers/organice/docker-compose.yml'
+  vars:
+    organice_url: "{{ organice_url }}"
