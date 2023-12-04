@@ -168,7 +168,7 @@ e.g. if you have your orgs fiels inside `Documents/org` this will be the path in
     user: <user-name>
     pass: <user-pass>
 
-## Wireguard (VPN)
+## Wireguard (VPN) WIP
 
 Creates docker-compose file based on `https://docs.linuxserver.io/images/docker-wireguard/`
 
