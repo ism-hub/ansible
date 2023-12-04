@@ -1,0 +1,12 @@
+---
+# shoudl includ 2 vars,
+# url - the url of the server e.g. cloud.example.com
+# mail - the mail letsencrypt-companion is going to use (optional)
+
+- hosts: localhost
+  become: false
+  roles:
+    - role: wireguard
+      # vpn_url: vpn.example.com
+      # peers: myPhone
+

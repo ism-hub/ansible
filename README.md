@@ -167,3 +167,24 @@ e.g. if you have your orgs fiels inside `Documents/org` this will be the path in
     WebDAV url: https://cloud.example.com/remote.php/dav/files/<user-name>/Documents/org 
     user: <user-name>
     pass: <user-pass>
+
+## Wireguard (VPN)
+
+Creates docker-compose file based on `https://docs.linuxserver.io/images/docker-wireguard/`
+
+Directory structure -
+
+    ~/servers/wireguard/docker-compose.yaml
+    ~/servers/wireguard/config/
+
+The script asks for `vpn_url` (`SERVERURL`) e.g. vpn.example.com
+The script asks for `peers` e.g. myPhone,...
+
+notice: to have the correct ip-address in vpn.example.com can use the ddns script above
+
+#### Connecting a (phone) client to the wireguard server
+
+1. Download the wireguard app on yor phone
+2. Add a tunnel using a QR-Code
+2.1 from docs - To display the QR codes of active peers again, you can use the following command and list the peer numbers as arguments: docker exec -it wireguard /app/show-peer 1 4 5 or docker exec -it wireguard /app/show-peer myPC myPhone myTablet (Keep in mind that the QR codes are also stored as PNGs in the config folder).
+3. Another option is to get the .conf file from - `~/servers/wireguard/config/peer_myPhone` by running `python3 -m http.server 7777` connect to the http server with the phone (internal network) and downloading it
