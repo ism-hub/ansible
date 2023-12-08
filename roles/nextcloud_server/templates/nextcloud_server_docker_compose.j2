@@ -57,12 +57,13 @@ services:
 
   db:
     image: mariadb:10.5.10
-    #restart: always
+    user: "{{uid}}:{{gid}}"
     environment:
       - MYSQL_ROOT_PASSWORD=1qwer5432
       - MYSQL_PASSWORD=1qwer5432
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
+      # - MARIADB_AUTO_UPGRADE=1 # see in the logs, if it needs upgrade can try to uncomment (after backup maybe)
     volumes:
       - ~/servers/nextcloud/synced/mariadb/var/lib/mysql:/var/lib/mysql
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
