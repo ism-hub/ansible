@@ -9,9 +9,9 @@ services:
     labels:
       com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     volumes:
-      - ~/servers/nextcloud/synced/for_https/certs:/etc/nginx/certs:ro
-      - ~/servers/nextcloud/synced/for_https/vhost.d:/etc/nginx/vhost.d
-      - ~/servers/nextcloud/synced/for_https/html:/usr/share/nginx/html
+      - ~/servers/nextcloud/not_synced/for_https/certs:/etc/nginx/certs:ro
+      - ~/servers/nextcloud/not_synced/for_https/vhost.d:/etc/nginx/vhost.d
+      - ~/servers/nextcloud/not_synced/for_https/html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
       - nginx_network
@@ -20,10 +20,10 @@ services:
   letsencrypt-companion:
     image: nginxproxy/acme-companion
     volumes:
-      - ~/servers/nextcloud/synced/for_https/certs:/etc/nginx/certs
-      - ~/servers/nextcloud/synced/for_https/vhost.d:/etc/nginx/vhost.d
-      - ~/servers/nextcloud/synced/for_https/html:/usr/share/nginx/html
-      - ~/servers/nextcloud/synced/for_https/acme:/etc/acme.sh
+      - ~/servers/nextcloud/not_synced/for_https/certs:/etc/nginx/certs
+      - ~/servers/nextcloud/not_synced/for_https/vhost.d:/etc/nginx/vhost.d
+      - ~/servers/nextcloud/not_synced/for_https/html:/usr/share/nginx/html
+      - ~/servers/nextcloud/not_synced/for_https/acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - DEFAULT_EMAIL={{lets_encrypt_mail}}

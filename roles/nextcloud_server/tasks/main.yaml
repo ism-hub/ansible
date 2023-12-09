@@ -16,25 +16,25 @@
 - name: Add https-stufff dependent folders with the correct user (if not exists) - cert
   become: false
   ansible.builtin.file:
-    path: ~/servers/nextcloud/synced/for_https/certs
+    path: ~/servers/nextcloud/not_synced/for_https/certs
     state: directory
 
 - name: Add https-stufff dependent folders with the correct user (if not exists) - vhost.d
   become: false
   ansible.builtin.file:
-    path: ~/servers/nextcloud/synced/for_https/vhost.d
+    path: ~/servers/nextcloud/not_synced/for_https/vhost.d
     state: directory
 
 - name: Add https-stufff dependent folders with the correct user (if not exists) - html
   become: false
   ansible.builtin.file:
-    path: ~/servers/nextcloud/synced/for_https/html
+    path: ~/servers/nextcloud/not_synced/for_https/html
     state: directory
 
 - name: Add https-stufff dependent folders with the correct user (if not exists) - acme
   become: false
   ansible.builtin.file:
-    path: ~/servers/nextcloud/synced/for_https/acme
+    path: ~/servers/nextcloud/not_synced/for_https/acme
     state: directory
 
 - name: Add nextcloud dependent folders with the correct user (if not exists) - www

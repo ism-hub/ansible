@@ -129,7 +129,7 @@ The script asks for `mail` this is optional and for the certificate-container to
 
 Create the following paths - 
 
-    ~/servers/nextcloud/synced/for_https    # data needed for the certificate
+    ~/servers/nextcloud/not_synced/for_https    # data needed for the certificate
     ~/servers/nextcloud/synced/var/www/html # the config and data of nextcloud
     ~/servers/nextcloud/synced/mariadb/var/lib/mysql  # the db nextcloud uses
 
