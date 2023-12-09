@@ -56,7 +56,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: mariadb:10.5.10
+    image: mariadb:11
     user: "{{uid}}:{{gid}}"
     environment:
       - MYSQL_ROOT_PASSWORD=1qwer5432
