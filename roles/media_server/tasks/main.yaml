@@ -14,10 +14,16 @@
     path: ~/servers/media_server/synced/deluge/config
     state: directory
 
-- name: Add dependent folders with the correct user (if not exists) - deluge/data
+- name: Add dependent folders with the correct user (if not exists) - deluge/data/downloads
   become: false
   ansible.builtin.file:
-    path: ~/servers/media_server/notsynced/deluge/data
+    path: ~/servers/media_server/notsynced/deluge/data/downloads
+    state: directory
+
+- name: Add dependent folders with the correct user (if not exists) - deluge/data/finished
+  become: false
+  ansible.builtin.file:
+    path: ~/servers/media_server/notsynced/deluge/data/finished
     state: directory
 
 - name: Add dependent folders with the correct user (if not exists) - plex/config

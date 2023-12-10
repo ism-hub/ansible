@@ -70,12 +70,13 @@ Installs docker and creates docker-compose for Plex, Sonarr, Radarr, Jackett, De
 
 Creates the following folders -
 
-    ~/servers/media_server/notsynced/deluge/data    # mount for the deluge container - deluge downloads everything to here
-    ~/servers/media_server/synced/deluge/config     # mount for the deluge container - deluge's config
-    ~/servers/media_server/synced/plex/config       # mount for the config of the plex container
-    ~/servers/media_server/synced/sonarr/config     # mount for the config of the sonarr container
-    ~/servers/media_server/synced/radarr/config     # mount for the config of the radarr container
-    ~/servers/media_server/synced/jackett/config    # mount for the config of the jackett container
+    ~/servers/media_server/notsynced/deluge/data/downloads  # mount for the deluge container - deluge downloads everything to here
+    ~/servers/media_server/notsynced/deluge/data/finished   # part of the mount for the deluge container - sonarr/radarr copy&rename on finish to here
+    ~/servers/media_server/synced/deluge/config             # mount for the deluge container - deluge's config
+    ~/servers/media_server/synced/plex/config               # mount for the config of the plex container
+    ~/servers/media_server/synced/sonarr/config             # mount for the config of the sonarr container
+    ~/servers/media_server/synced/radarr/config             # mount for the config of the radarr container
+    ~/servers/media_server/synced/jackett/config            # mount for the config of the jackett container
 (notice - config mounts needed when updating to a new container, to not lose all the configuration)
 
 Creates the following file -
@@ -118,7 +119,8 @@ Sonnar/Radarr configuration -
 3. Add Deluge as Download-Clients - Setting -> Download Client -> <press + sign> -> click on deluge -> fill the form (mainly the deluge pass and the `Host` as the ip of the server)
 4. Add Indexers (using Jacket) - basically enter Jackett `http://<server-ip>:9117/` and follow the instructions there (press `Add indexer` choose some (like 1337x, ThePirateBay, Torrentz, etc.) and follow `Adding a Jackett indexer in Sonarr or Radarr`)
 5. Rename episodes/Movies (Settings -> Media Management -> Rename Episodes/Movies <click the choice-box>)
-6. When downloading something choose the `Root Folder` to be `/data` (need to do once and it remembers for the next time) (without this the hard-link wont work and it will copy and use up more space)
+6. When downloading something choose the `Root Folder` to be `/data/finished` (need to do once and it remembers for the next time) (without this the hard-link wont work and it will copy and use up more space)
+(when deluge finish to download to `/data/downloads`, sonarr/radarr will hardlink it (with a more readable name to `/data/finished`))
 
 ## Nextcloud-Server
 
