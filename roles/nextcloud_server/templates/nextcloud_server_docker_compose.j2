@@ -44,6 +44,8 @@ services:
     depends_on:
       - db
     environment:
+      - NEXTCLOUD_TRUSTED_DOMAINS=https://{{nextcloud_url}}
+      - OVERWRITEPROTOCOL=https  # not sure if needed
       - MYSQL_PASSWORD=1qwer5432
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
