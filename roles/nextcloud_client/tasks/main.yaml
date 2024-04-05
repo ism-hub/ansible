@@ -1,46 +1,66 @@
-- name: add nextcloud-client repo
-  apt_repository:
-    repo: ppa:nextcloud-devs/client
-    update-cache: true
+- name: get the user id running the deploy
+  become: false
+  local_action: command id -u
+  register: user_id
 
-- name: install nextcloud cli client
-  apt:
-    update-cache: true
-    pkg:
-      - nextcloud-client
-    state: latest
+- name: get the group id running the deploy
+  become: false
+  local_action: command id -g
+  register: group_id
 
-- name: debug stuff
-  debug:
-    msg: 'using playbook_dir to get files dir {{playbook_dir}}/roles/nextcloud_client/files/'
-
-# including  file which containes 2 vars
-# nextcloud_user - the username
-# nextcloud_pass - the pass
-- name: include nextcloud info
-  ansible.builtin.include_vars:
-    file: ../../../../nextcloud_uer_info.yaml
-
-- name: 'Creating cronjob script directory'
+- name: Creating ~/servers/nclient directory for the docker-compose file
   become: false
   file:
-    path: '~/.local/bin/cron/'
+    path: '~/servers/nclient'
     state: directory
 
-- name: Generating nextcloudcmd sync script (for the cron-job)
+- name: Creating ~/servers/nclient/config directory for the docker-compose file
+  become: false
+  file:
+    path: '~/servers/nclient/config'
+    state: directory
+
+- name: Creating ~/servers/nclient/nextcloud directory for the docker-compose file
+  become: false
+  file:
+    path: '~/servers/nclient/nextcloud'
+    state: directory
+
+- name: Copy the server folder
+  become: false
+  copy:
+    src: files/    # note the '/' <-- !!! without it, it will copy the files folder
+    dest: ~/servers/nclient/
+
+- name: create synced dirs
+  become: false
+  file:
+    path: "~/servers/nclient/nextcloud{{ item|safe|trim }}"
+    state: directory
+    recurse: yes
+  with_items: "{{ vars.server_dirs }}"
+
+- name: Generating nextcloudcmd sync script2 (for the cron-job)
   become: false
   template:
     mode: 0700 #  only user can read/write/exec
-    src: nextcloudcmd_cronjob.j2
-    dest: '~/.local/bin/cron/nextcloudcmd_cronjob.sh'
-  vars:
-    nxtcld_server: http://192.168.1.88
-    map_server_dir_to_local_dir:
-      '/Documents/org': '~/nextcloud/Documents/org' # org files
+    src: nextcloudcmd_cronjob.sh.j2
+    dest: '~/servers/nclient/config/nextcloudcmd_cronjob.sh'
 
-- name: Add cronjob which sync the folders (specified in vars) every min
+- name: Generating Dockerfile
   become: false
-  ansible.builtin.cron:
-    name: 'Sync nextcloudcmd'
-    minute: '*'
-    job: '~/.local/bin/cron/nextcloudcmd_cronjob.sh'
+  template:
+    mode: 0700 #  only user can read/write/exec
+    src: Dockerfile.j2
+    dest: '~/servers/nclient/Dockerfile'
+
+- name: Generating Docker Compose file
+  become: false
+  template:
+    mode: 0700 #  only user can read/write/exec
+    src: docker-compose.yml.j2
+    dest: '~/servers/nclient/docker-compose.yml'
+  vars:
+    uid: "{{ user_id.stdout }}"
+    gid: "{{ group_id.stdout }}"
+

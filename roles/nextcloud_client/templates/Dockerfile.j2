@@ -1,0 +1,49 @@
+FROM ubuntu
+
+ARG IUNAME=notroot
+ARG UID=0
+ARG GID=0
+ARG ROOT=/nclient
+
+# install nextcloudcmd
+RUN apt update
+RUN apt install software-properties-common -y
+RUN add-apt-repository ppa:nextcloud-devs/client
+RUN apt update
+RUN apt install nextcloud-client -y
+RUN apt install sudo -y
+
+# cron
+RUN apt install cron -y
+
+# install python
+RUN apt-get install python3 -y
+
+# create user so our mounted files will have the correct uid:gid
+# user should override
+# add user to sudoers
+RUN groupadd -g $GID -o $IUNAME
+RUN useradd -m -u $UID -g $GID -o -s /bin/bash $IUNAME
+RUN usermod -aG sudo $IUNAME
+RUN echo "$IUNAME ALL=(ALL:ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/$IUNAME
+
+# our root-dir
+RUN mkdir $ROOT
+# create config and entrypoint
+ADD ./config ${ROOT}/config
+ADD ./config ${ROOT}/config_org
+COPY ./entrypoint.sh ${ROOT}/entrypoint.sh
+RUN chmod u+x ${ROOT}/entrypoint.sh
+RUN chmod u+x ${ROOT}/config/nextcloudcmd_cronjob.sh
+
+RUN chown -R $UID:$GID ${ROOT}
+USER $IUNAME
+
+# create user specific folders
+{% for dir in vars.server_dirs %}
+RUN mkdir -p ${ROOT}/synced{{dir}}
+{% endfor %}
+
+ENV REAL_RUN=1
+
+ENTRYPOINT ["/bin/bash", "/nclient/entrypoint.sh"]

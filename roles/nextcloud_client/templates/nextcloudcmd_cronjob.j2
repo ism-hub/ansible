@@ -1,8 +1,0 @@
-# can use this to sync Documents/org in the server to ~/nextcloud/Documents/org/ in the client
-# http://192.168.1.88 is the ip of the server
-# example of the command -
-# nextcloudcmd --path /Documents/org ~/nextcloud/Documents/org http://192.168.1.88
-
-{% for key, value in vars.map_server_dir_to_local_dir.items() %}
-nextcloudcmd -u {{nextcloud_user}} -p {{nextcloud_pass}} --trust --non-interactive --path {{key}} {{value}} {{vars.nxtcld_server}}
-{% endfor %}

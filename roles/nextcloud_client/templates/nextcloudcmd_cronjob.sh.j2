@@ -1,0 +1,10 @@
+#! /bin/bash
+
+# can use this to sync Documents/obsidian in the server to ~/nextcloud/Documents/obsidian/ in the client
+# http://192.168.1.88 is the ip of the server
+# example of the command -
+# nextcloudcmd --path /Documents/org ~/nextcloud/Documents/org http://192.168.1.88
+
+{% for dir in vars.server_dirs %}
+nextcloudcmd -u ${UNAME} -p ${PASS} --trust --non-interactive --path {{dir}} /nclient/synced{{dir}} ${SERVER}
+{% endfor %}

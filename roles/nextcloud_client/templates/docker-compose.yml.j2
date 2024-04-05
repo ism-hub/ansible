@@ -1,0 +1,22 @@
+version: '3.2'
+
+services:
+  nclient:
+    build:
+      context: . #current dir as build context
+      args:
+        UID: {{uid}} # this will be the uid of the data pulled from nextcloud
+        GID: {{gid}} # like the uid only for the group-id
+    environment: 
+      - UNAME={{UNAME}} # must, what is the nextcloud username
+      - PASS={{PASS}} # must, the user pass
+      - SERVER={{SERVER}} # must, nextcloud server address
+{% for dir in vars.server_dirs %}
+      - SYNC_FOLDER_{{loop.index}}={{dir}} # optional, which folder from nextcloud to sync
+{% endfor %}
+    volumes: 
+      - ~/servers/nclient/config:/nclient/config # can edit the crontab timing and the folder to sync
+{% for dir in vars.server_dirs %}
+      - ~/servers/nclient/nextcloud{{dir}}:/nclient/synced{{dir}} # in the container always sync the folder from nextcloud to the /nclient/synced folder
+{% endfor %}
+    restart: unless-stopped

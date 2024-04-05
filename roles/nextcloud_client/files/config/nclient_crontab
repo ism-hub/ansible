@@ -1,0 +1,1 @@
+* * * * * BASH_ENV=/nclient/env bash -c "python3 /nclient/config/cron_script_wrapper.py" > /proc/1/fd/1 2>/proc/1/fd/2 
