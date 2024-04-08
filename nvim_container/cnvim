@@ -1,0 +1,14 @@
+#! /bin/bash
+
+# build if no image exists
+if [ -z "$(docker images -q ism1/nvim 2> /dev/null)" ]; then
+    docker build $HOME/nvim_container -t ism1/nvim
+fi
+
+# docker rm nvim_container
+# start the container
+docker run -it --name nvim --privileged -e UID=$(id -u) -e GID=$(id -g) -e TERM=$TERM -v $1:/rfolder/host_fs ism1/nvim
+# this way we save the changes between runs while still being able to mount different paths (docker start does't let us to change mounts)
+docker commit nvim ism1/nvim
+# we saved image of the container we can del the actual container now
+docker rm nvim

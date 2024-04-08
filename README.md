@@ -29,11 +29,17 @@ No need for sudo.
 
 Download my tmux conf (repo in this github) and set it.
 
-## nvim (WIP)
+## nvim
 
-WIP (work in progress).
 Installs nvim and dependencies (ripgrep) and download my configuration (repo in this github)
-
+## Nvim from container (WIP - need to test more)
+Not using ansible (on the host),
+Building a container with nvim inside of it,
+Providing a script which given a directory will open the nvim from inside the container.
+The installation copies files to ~/nvim_container and add that folder to the `$PATH` (`cnvim` (container-nvim) is sitting there)
+### Usage
+Installation - `bash <(curl -s https://raw.githubusercontent.com/ism-hub/ansible/main/nvim_container.sh)`
+Usage - `cnvim <folder>`
 ## nextcloud-client
 
 Creates Docker-Compose file in `~/servers/nclient`
