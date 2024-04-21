@@ -36,6 +36,8 @@ USER $IUNAME
 # some problems using only rustup (instead of cargo), but I think rustup and this can cause problems.. need to check (formatting doesn't work if I install only cargo)
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 RUN mkdir -p ~/servers/nclient/nextcloud/Documents/obsidian/
+RUN ansible-pull -U https://github.com/ism-hub/ansible.git fzf.yaml
+RUN ansible-pull -U https://github.com/ism-hub/ansible.git tmux.yaml
 RUN ansible-pull -U https://github.com/ism-hub/ansible.git npm.yaml
 RUN ansible-pull -U https://github.com/ism-hub/ansible.git nvim_unstable.yaml
 RUN sudo npm install -g neovim

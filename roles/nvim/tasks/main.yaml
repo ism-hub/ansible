@@ -27,3 +27,12 @@
     clone: yes
     update: yes
     depth: 1
+
+- name: Add to bashrc - export SUDO_EDITOR=/usr/bin/nvim
+  become: false
+  tags: nvim
+  blockinfile:
+    dest: "~/.bashrc"
+    block: |
+      export SUDO_EDITOR=/usr/bin/nvim
+    create: yes
