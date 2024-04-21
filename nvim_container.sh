@@ -13,6 +13,11 @@ if [ ! -d "$INSTALL_DIR" ]; then
     (cd $INSTALL_DIR && curl https://raw.githubusercontent.com/ism-hub/ansible/main/nvim_container/cnvim -O)
     (cd $INSTALL_DIR && curl https://raw.githubusercontent.com/ism-hub/ansible/main/nvim_container/entrypoint.sh -O)
     chmod u+x $INSTALL_DIR/cnvim
+    # add to path (add line to .bashrc only if doesn't exist)
+    LINE="export PATH=$INSTALL_DIR:"
+    LINE+='$PATH'
+    FILE=~/.bashrc
+    grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
 fi
 
 export PATH="$INSTALL_DIR:$PATH"
