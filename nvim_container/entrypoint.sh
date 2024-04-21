@@ -18,6 +18,6 @@ if ! [ $CUR_UID = $UID ]; then
     find / -path /rfolder/host_fs -prune -o -uid $CUR_UID -exec chown -v -h $UID '{}' \;
 fi
 
-# become the user and start nvim
-echo "nvim /rfolder/host_fs" | su - notroot
-# sudo -u notroot nvim -c 'cd /rfolder/host_fs/'
+# become the user and start bash
+# su - notroot
+/bin/bash

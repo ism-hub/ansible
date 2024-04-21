@@ -1,14 +1,120 @@
 #! /bin/bash
+if [ "$1" = "-h" ]; then
+    echo "Opens the nvim-container,
+if the path specified opens nvim in that path,
+else opens the docker container.
 
-# build if no image exists
-if [ -z "$(docker images -q ism1/nvim 2> /dev/null)" ]; then
-    docker build $HOME/nvim_container -t ism1/nvim
+usage: 
+  cnvim [solo_options | path]
+  cnvim [options] [path]
+    
+  solo_options:
+    --clean           Deletes the image and the container
+  options:
+    --clean-start     Deletes the image and remove the container before starting
+    --no-cache        Like clean-start but also building the container from scratch
+  path:
+    accepts '.', '~' and absolute paths (convert everything to container paths)"
+    exit 0
 fi
 
-# docker rm nvim_container
-# start the container
-docker run -it --name nvim --privileged -e UID=$(id -u) -e GID=$(id -g) -e TERM=$TERM -v $1:/rfolder/host_fs ism1/nvim
-# this way we save the changes between runs while still being able to mount different paths (docker start does't let us to change mounts)
-docker commit nvim ism1/nvim
-# we saved image of the container we can del the actual container now
-docker rm nvim
+set_state () {
+    IS_IMAGE_EXISTS=$(docker images -q ism1/cnvim 2> /dev/null)
+    CONTAINER_ID=$(docker ps -aq --filter name=cnvim 2> /dev/null)
+    if [ "$(docker container inspect -f '{{.State.Status}}' cnvim 2> /dev/null)" == "running" ]; then
+       IS_CONTAINER_RUNNING=true
+    fi
+}
+
+set_state
+
+while test $# -gt 0
+do
+    case "$1" in
+        --clean) IS_CLEAN=true
+            ;;
+        --clean-start) IS_CLEAN_START=true
+            ;;
+        --no-cache) IS_NO_CACHE=true
+            ;;
+        --*) echo "bad option $1" && exit 1
+            ;;
+        *) WANTED_PATH=$1
+            ;;
+    esac
+    shift
+done
+
+delete_image_and_container () {
+    if [ $IS_CONTAINER_RUNNING ]; then
+        echo "stopping cnvim container"
+        docker stop cnvim
+    fi
+
+    if [ $CONTAINER_ID ]; then
+        echo "removing cnvim container"
+        docker rm $CONTAINER_ID
+    fi
+
+    if [ $IS_IMAGE_EXISTS ]; then
+        echo "deleteing cnvim image"
+        docker image rm ism1/cnvim
+    fi
+
+    unset IS_IMAGE_EXISTS IS_CONTAINER_RUNNING CONTAINER_ID
+}
+
+# docker image build extra params
+if [ $IS_NO_CACHE ]; then
+    IMAGE_BUILD_EXTRA_PARAMS="--no-cache"
+fi
+
+# build image (if no image exists), start the container (if the container is down)
+start_container () {
+    if ! [ $IS_IMAGE_EXISTS ]; then
+        echo "creating cnvim image"
+        docker build $HOME/nvim_container $IMAGE_BUILD_EXTRA_PARAMS -t ism1/cnvim
+    fi
+
+    if ! [ $CONTAINER_ID ]; then
+        echo "creating (docker run) cnvim container"
+        docker run -itd --name cnvim -h=cnvim --privileged -e UID=$(id -u) -e GID=$(id -g) -e TERM=$TERM -v /:/rfolder/host_fs ism1/cnvim
+        echo "executing the entrypoint (again to force us to wait), need to ctrl+d when it finish"
+        docker exec -it cnvim /bin/bash -c "/rfolder/entrypoint.sh"
+
+    fi
+
+    if ! [ $IS_CONTAINER_RUNNING ]; then
+        echo "starting (docker start) cnvim container"
+        docker start cnvim
+    fi
+
+    set_state
+}
+
+if [ $IS_CLEAN ]; then
+    delete_image_and_container
+    exit 0
+fi
+
+# ----- we need to start the container -----
+
+if [ $IS_CLEAN_START ]; then
+    delete_image_and_container
+fi
+
+start_container
+
+if [ $WANTED_PATH ]; then
+    # expand relative paths
+    WANTED_PATH=$(readlink -f $WANTED_PATH)
+    # convert to container path
+    WANTED_PATH="/rfolder/host_fs${WANTED_PATH}"
+    # NOTICE: the `--user` docker option doesn't work well and nvim keep running and opening nvim stuff in /bin/sh
+    # (changing /bin/sh to point /bin/bash also doesn't work, cuz bahs sees that we try to open it as sh and behaves different)
+    # notice: we need the 'login shell and interactive shell'
+    docker exec -it cnvim /bin/bash -lic "sudo --login -u notroot bash -lic 'nvim ${WANTED_PATH}'"
+    #docker exec -it cnvim /bin/bash -c "runuser --user notroot -- bash -lic 'nvim ${WANTED_PATH}'"
+else
+    docker exec -it cnvim /bin/bash -c 'su - notroot'
+fi

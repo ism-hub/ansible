@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:noble
 
 ENV TZ=Europe/Helsinki \
     DEBIAN_FRONTEND=noninteractive
@@ -13,8 +13,12 @@ ARG ROOT=/rfolder
 
 # notice linux-tools is for perf
 RUN apt-get update && \
-    apt-get install sudo ansible git fuse unzip fd-find fswatch curl wget build-essential gcc make \
-    linux-tools-common linux-tools-generic linux-tools-$(uname -r) -y
+    apt-get install locales bash sudo ansible git fuse unzip fd-find fswatch curl wget build-essential gcc make -y
+# linux-tools-common linux-tools-generic linux-tools-$(uname -r) -y
+
+RUN locale-gen en_US.UTF-8
+
+RUN deluser --remove-home ubuntu
 
 # create user so our mounted files will have the correct uid:gid
 # user should override
@@ -27,9 +31,6 @@ RUN echo "$IUNAME ALL=(ALL:ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/$IUNAME
 # our root-dir
 RUN mkdir $ROOT
 RUN mkdir $ROOT/host_fs
-# # create config and entrypoint
-COPY ./entrypoint.sh ${ROOT}/entrypoint.sh
-RUN chmod u+x ${ROOT}/entrypoint.sh
 
 RUN chown -R $UID:$GID ${ROOT}
 USER $IUNAME
@@ -44,7 +45,10 @@ RUN ansible-pull -U https://github.com/ism-hub/ansible.git nvim_unstable.yaml
 RUN sudo npm install -g neovim
 
 USER root
-RUN pip3 install neovim
+# RUN pip3 install neovim
+
+COPY ./entrypoint.sh ${ROOT}/entrypoint.sh
+RUN chmod u+x ${ROOT}/entrypoint.sh
 
 ENV REAL_RUN=1
 
