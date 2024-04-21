@@ -28,13 +28,14 @@
     update: yes
     depth: 1
 
-- name: Add to bashrc - export SUDO_EDITOR=/usr/bin/nvim
+- name: Add to bashrc - export SUDO_EDITOR and EDITOR
   become: false
   tags: nvim
   blockinfile:
     dest: "~/.bashrc"
     block: |
       export SUDO_EDITOR=/usr/bin/nvim
+      export EDITOR=nvim
     create: yes
     marker: "# {mark} ANSIBLE MANAGED BLOCK sudoedit"
 
