@@ -36,3 +36,5 @@
     block: |
       export SUDO_EDITOR=/usr/bin/nvim
     create: yes
+    marker: "# {mark} ANSIBLE MANAGED BLOCK sudoedit"
+
