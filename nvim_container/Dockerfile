@@ -41,7 +41,7 @@ RUN ansible-pull -U https://github.com/ism-hub/ansible.git fzf.yaml
 RUN ansible-pull -U https://github.com/ism-hub/ansible.git bash.yaml
 RUN ansible-pull -U https://github.com/ism-hub/ansible.git tmux.yaml
 RUN ansible-pull -U https://github.com/ism-hub/ansible.git npm.yaml
-RUN ansible-pull -U https://github.com/ism-hub/ansible.git nvim_unstable.yaml
+RUN ansible-pull -U https://github.com/ism-hub/ansible.git nvim.yaml
 RUN sudo npm install -g neovim
 
 USER root
