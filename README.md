@@ -104,6 +104,7 @@ Sonnar/Radarr configuration -
 5. Rename episodes/Movies (Settings -> Media Management -> Rename Episodes/Movies <click the choice-box>)
 6. When downloading something choose the `Root Folder` to be `/data/finished` (need to do once and it remembers for the next time) (without this the hard-link wont work and it will copy and use up more space)
 (when deluge finish to download to `/data/downloads`, sonarr/radarr will hardlink it (with a more readable name to `/data/finished`))
+7. connect to Plex (will update Plex automatically when movie/series finish downloading) - Settings -> Connect -> + (add connection) -> Plex Media Server -> enter host ip and press "Authenticate with Plex.tv" -> save
 
 ## Nextcloud-Server
 
