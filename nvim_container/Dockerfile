@@ -16,6 +16,10 @@ RUN apt-get update && \
     apt-get install locales bash sudo ansible git fuse unzip fd-find fswatch curl wget build-essential gcc make -y
 # linux-tools-common linux-tools-generic linux-tools-$(uname -r) -y
 
+# go stuff
+RUN wget https://go.dev/dl/go1.22.4.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.22.4.linux-amd64.tar.gz
+
 RUN locale-gen en_US.UTF-8
 
 RUN deluser --remove-home ubuntu
@@ -43,6 +47,9 @@ RUN ansible-pull -U https://github.com/ism-hub/ansible.git tmux.yaml
 RUN ansible-pull -U https://github.com/ism-hub/ansible.git npm.yaml
 RUN ansible-pull -U https://github.com/ism-hub/ansible.git nvim.yaml
 RUN sudo npm install -g neovim
+
+# go stuff cont. 1
+RUN echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile
 
 USER root
 # RUN pip3 install neovim
