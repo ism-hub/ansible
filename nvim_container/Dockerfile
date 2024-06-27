@@ -55,6 +55,32 @@ RUN sudo npm install -g neovim
 # go stuff cont. 1
 RUN echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile
 
+# .net stuff cont. (omnisharp lsp)
+RUN mkdir ~/.omnisharp
+RUN touch ~/.omnisharp/omnisharp.json
+RUN echo '{ \n\
+  "RoslynExtensionsOptions": { \n\
+    "documentAnalysisTimeoutMs": 30000, \n\
+    "enableDecompilationSupport": true, \n\
+    "enableImportCompletion": true, \n\
+    "enableAnalyzersSupport": true, \n\
+    "inlayHintsOptions": { \n\
+        "enableForParameters": true, \n\
+        "forLiteralParameters": true, \n\
+        "forIndexerParameters": true, \n\
+        "forObjectCreationParameters": true, \n\
+        "forOtherParameters": true, \n\
+        "suppressForParametersThatDifferOnlyBySuffix": false, \n\
+        "suppressForParametersThatMatchMethodIntent": false, \n\
+        "suppressForParametersThatMatchArgumentName": false, \n\
+        "enableForTypes": true, \n\
+        "forImplicitVariableTypes": true, \n\
+        "forLambdaParameterTypes": true, \n\
+        "forImplicitObjectCreation": true \n\
+    } \n\
+  } \n\
+}' > ~/.omnisharp/omnisharp.json
+
 USER root
 # RUN pip3 install neovim
 
