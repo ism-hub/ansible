@@ -18,6 +18,11 @@ if ! [ $CUR_UID = $UID ]; then
     find / -path /rfolder/host_fs -prune -o -uid $CUR_UID -exec chown -v -h $UID '{}' \;
 fi
 
+# link ssh credentials
+su -c "ln -s /rfolder/host_fs/home/${UNAME}/.ssh ~/" notroot 
+# link gitconfig 
+su -c "ln -s /rfolder/host_fs/home/${UNAME}/.gitconfig ~/" notroot || true
+
 # become the user and start bash
 # su - notroot
 /bin/bash
