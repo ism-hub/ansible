@@ -78,7 +78,7 @@ start_container () {
 
     if ! [ $CONTAINER_ID ]; then
         echo "creating (docker run) cnvim container"
-        docker run -itd --name cnvim -h=cnvim --privileged -e UNAME=$(whoami) -e UID=$(id -u) -e GID=$(id -g) -e TERM=$TERM -v /:/rfolder/host_fs ism1/cnvim
+        docker run -itd --name cnvim -h=cnvim --privileged --pid=host -e UNAME=$(whoami) -e UID=$(id -u) -e GID=$(id -g) -e TERM=$TERM -v /:/rfolder/host_fs ism1/cnvim
         echo "executing the entrypoint (again to force us to wait), need to ctrl+d when it finish"
         docker exec -it cnvim /bin/bash -c "/rfolder/entrypoint.sh"
 
