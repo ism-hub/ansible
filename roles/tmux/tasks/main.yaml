@@ -1,5 +1,5 @@
 - name: copy tmux conf
   become: false
   get_url:
-    url: https://raw.githubusercontent.com/ism-hub/tmux-conf/master/.tmux.conf
+    url: https://raw.githubusercontent.com/ism-hub/dotfiles/main/tmux/.tmux.conf
     dest: '~'
