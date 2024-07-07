@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM --platform=linux/amd64 ubuntu:noble
 
 ENV TZ=Europe/Helsinki \
     DEBIAN_FRONTEND=noninteractive
