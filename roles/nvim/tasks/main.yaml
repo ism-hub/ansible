@@ -1,10 +1,32 @@
-- name: Download nvim
-  tags: nvim
-  ansible.builtin.get_url:
-    url: "{{appimage}}"
+# - name: Download nvim
+#   tags: nvim
+#   ansible.builtin.get_url:
+#     url: "{{nvim_tar}}"
+#     dest: /usr/bin/nvim
+#     mode: 'a+x'
+#     checksum: "{{nvim_tar_sha}}"
+
+- name: get the username running the deploy
+  become: false
+  local_action: command whoami
+  register: username
+
+- name: Download and unzip nvim
+  become: false
+  ansible.builtin.unarchive:
+    src:  "{{nvim_tar}}"
+    dest: ~/
+    mode: 'a+x'
+    remote_src: yes
+
+- name: Link nvim
+  ansible.builtin.file:
+    src: /home/{{ username.stdout }}/nvim-linux64/bin/nvim
     dest: /usr/bin/nvim
     mode: 'a+x'
-    checksum: "{{appimage_sha}}"
+    # owner: foo
+    # group: foo
+    state: link
 
 - name: Install nvim dependencies
   tags: nvim
