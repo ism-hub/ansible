@@ -4,7 +4,8 @@
   roles:
     - nvim_remove
     - role: nvim
-      nvim_tar: https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-linux64.tar.gz
-      nvim_tar_sha: sha256:https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-linux64.tar.gz.sha256sum
+      install_type: stable
+      # nvim_tar: https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-linux64.tar.gz
+      # nvim_tar_sha: sha256:https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-linux64.tar.gz.sha256sum
       config_branch: main
 

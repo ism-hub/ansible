@@ -1,3 +1,7 @@
+- name: get DEB arch
+  shell: dpkg --print-architecture
+  register: deb_arch
+
 - name: Install npm dependencies
   tags: docker
   package:
@@ -18,7 +22,7 @@
 
     - name: node | apt source for node 21.x
       ansible.builtin.apt_repository:
-        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/nodesource.asc] https://deb.nodesource.com/node_21.x nodistro main"
+        repo: "deb [arch={{ deb_arch.stdout }} signed-by=/etc/apt/keyrings/nodesource.asc] https://deb.nodesource.com/node_21.x nodistro main"
         state: present
 
 - name: Install npm and nodejs

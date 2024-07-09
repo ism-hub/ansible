@@ -11,13 +11,30 @@
   local_action: command whoami
   register: username
 
+- name: Add nvim unstable ppa
+  ansible.builtin.apt_repository:
+    repo: ppa:neovim-ppa/unstable
+  when: install_type == "unstable"
+
+- name: Add nvim stable ppa
+  ansible.builtin.apt_repository:
+    repo: ppa:neovim-ppa/stable
+  when: install_type == "unstable"
+
+- name: Try to install neovim ver 0.10.*
+  ansible.builtin.apt:
+    name: neovim=0.10.*
+    update-cache: yes
+  when: install_type == "unstable"
+
 - name: Download and unzip nvim
   become: false
   ansible.builtin.unarchive:
-    src:  "{{nvim_tar}}"
+    src:  https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-linux64.tar.gz
     dest: ~/
     mode: 'a+x'
     remote_src: yes
+  when: install_type == "stable"
 
 - name: Link nvim
   ansible.builtin.file:
@@ -27,6 +44,7 @@
     # owner: foo
     # group: foo
     state: link
+  when: install_type == "stable"
 
 - name: Install nvim dependencies
   tags: nvim

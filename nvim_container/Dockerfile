@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 ubuntu:noble
+FROM ubuntu:noble
 
 ENV TZ=Europe/Helsinki \
     DEBIAN_FRONTEND=noninteractive
@@ -32,36 +32,36 @@ RUN sudo apt-get update && \
     sudo apt-get install -y dotnet-sdk-8.0 aspnetcore-runtime-8.0
 
 # go stuff
-RUN wget https://go.dev/dl/go1.22.4.linux-amd64.tar.gz
-RUN tar -C /usr/local -xzf go1.22.4.linux-amd64.tar.gz
+# RUN wget https://go.dev/dl/go1.22.4.linux-amd64.tar.gz
+# RUN tar -C /usr/local -xzf go1.22.4.linux-amd64.tar.gz
 
 # install cloud stuff
 #install SAM
-RUN wget https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
-RUN unzip aws-sam-cli-linux-x86_64.zip -d sam-installation
-RUN ./sam-installation/install
-RUN rm aws-sam-cli-linux-x86_64.zip
-RUN rm -r sam-installation
-# install cargo-lambda
-RUN apt-get update && \
-    apt-get install -y pipx
-USER $IUNAME
-RUN pipx install cargo-lambda
-RUN pipx ensurepath
-# install Zig (cargo toolchain wants it)
-RUN wget https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz -P ~
-RUN tar xf ~/zig-linux-x86_64-0.13.0.tar.xz -C ~
-RUN ln -s ~/zig-linux-x86_64-0.13.0/zig ~/.local/bin/zig
-RUN rm ~/zig-linux-x86_64-0.13.0.tar.xz
-# aws-vault
-RUN wget https://github.com/99designs/aws-vault/releases/download/v7.2.0/aws-vault-linux-amd64 -O ~/.local/bin/aws-vault
-RUN chmod u+x ~/.local/bin/aws-vault
-RUN echo 'AWS_VAULT_BACKEND=file' >> ~/.bashrc
-RUN echo 'AWS_REGION=eu-north-1' >> ~/.bashrc
-# aws cli
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o ~/awscliv2.zip
-RUN unzip ~/awscliv2.zip -d ~
-RUN sudo ~/aws/install
+# RUN wget https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+# RUN unzip aws-sam-cli-linux-x86_64.zip -d sam-installation
+# RUN ./sam-installation/install
+# RUN rm aws-sam-cli-linux-x86_64.zip
+# RUN rm -r sam-installation
+# # install cargo-lambda
+# RUN apt-get update && \
+#     apt-get install -y pipx
+# USER $IUNAME
+# RUN pipx install cargo-lambda
+# RUN pipx ensurepath
+# # install Zig (cargo toolchain wants it)
+# RUN wget https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz -P ~
+# RUN tar xf ~/zig-linux-x86_64-0.13.0.tar.xz -C ~
+# RUN ln -s ~/zig-linux-x86_64-0.13.0/zig ~/.local/bin/zig
+# RUN rm ~/zig-linux-x86_64-0.13.0.tar.xz
+# # aws-vault
+# RUN wget https://github.com/99designs/aws-vault/releases/download/v7.2.0/aws-vault-linux-amd64 -O ~/.local/bin/aws-vault
+# RUN chmod u+x ~/.local/bin/aws-vault
+# RUN echo 'AWS_VAULT_BACKEND=file' >> ~/.bashrc
+# RUN echo 'AWS_REGION=eu-north-1' >> ~/.bashrc
+# # aws cli
+# RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o ~/awscliv2.zip
+# RUN unzip ~/awscliv2.zip -d ~
+# RUN sudo ~/aws/install
 
 USER root
 # our root-dir
@@ -81,7 +81,7 @@ RUN ansible-pull -U https://github.com/ism-hub/ansible.git nvim.yaml
 RUN sudo npm install -g neovim
 
 # go stuff cont. 1
-RUN echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile
+# RUN echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile
 
 # .net stuff cont. (omnisharp lsp)
 RUN mkdir ~/.omnisharp
