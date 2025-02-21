@@ -30,7 +30,7 @@
 - name: Download and unzip nvim
   become: false
   ansible.builtin.unarchive:
-    src:  https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-linux64.tar.gz
+    src: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
     dest: ~/
     mode: 'a+x'
     remote_src: yes
@@ -38,7 +38,7 @@
 
 - name: Link nvim
   ansible.builtin.file:
-    src: /home/{{ username.stdout }}/nvim-linux64/bin/nvim
+    src: /home/{{ username.stdout }}/nvim-linux-x86_64/bin/nvim
     dest: /usr/bin/nvim
     mode: 'a+x'
     # owner: foo
