@@ -34,7 +34,7 @@ services:
     restart: unless-stopped
 
   nextcloud:
-    image: nextcloud:27
+    image: nextcloud:29
     user: "{{uid}}:{{gid}}"
     hostname: {{nextcloud_url}}
     # ports:
